@@ -92,6 +92,10 @@ open class PublishedKotlinModule : Plugin<Project> {
                                     && InvokerHelper.getMetaClass(it).getProperty(it, "artifactId") == "kotlin-stdlib"
                         }
                         ?.also {
+                            val newVersion = project.extra["substituteKotlinStdlibVersion"]
+                            if (newVersion != null) {
+                                InvokerHelper.getMetaClass(it).setProperty(it, "version", newVersion)
+                            }
                             InvokerHelper.getMetaClass(it).setProperty(it, "exclusions", emptyList<Any>())
                             logger.warn("WARNING! Removed exclusions from kotlin-stdlib dependency of ${this.artifactId} artifact's maven metadata, check kotlin-stdlib dependency of ${project.path} project")
                         }

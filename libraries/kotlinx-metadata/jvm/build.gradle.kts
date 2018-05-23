@@ -59,6 +59,8 @@ sourcesJar {
 }
 
 javadocJar()
+
+extra["substituteKotlinStdlibVersion"] = "1.2.41"
 // publish()
 
 projectTest {
