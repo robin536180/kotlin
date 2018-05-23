@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.renderer
 import org.jetbrains.kotlin.descriptors.*
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.DescriptorUtils
+import org.jetbrains.kotlin.resolve.descriptorUtil.isCompanionObject
 import java.util.*
 
 interface ClassifierNamePolicy {
@@ -30,11 +31,14 @@ interface ClassifierNamePolicy {
 
             // for nested classes qualified name should be used
             var current: DeclarationDescriptor? = classifier
-            do {
-                qualifiedNameElements.add(current!!.name)
+            while (current is ClassifierDescriptor) {
+                val skipName = renderer is DescriptorRendererOptions && !renderer.renderCompanionObjectName && current.isCompanionObject()
+                if (!skipName) {
+                    qualifiedNameElements.add(current.name)
+                }
+
                 current = current.containingDeclaration
             }
-            while (current is ClassDescriptor)
 
             return renderFqName(qualifiedNameElements.asReversed())
         }

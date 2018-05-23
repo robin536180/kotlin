@@ -53,9 +53,10 @@ class ImportAwareClassifierNamePolicy(
 }
 
 fun getInlayHintsTypeRenderer(bindingContext: BindingContext, context: KtElement) =
-    DescriptorRenderer.COMPACT_WITH_SHORT_TYPES.withOptions {
+    DescriptorRenderer.SHORT_NAMES_IN_TYPES.withOptions {
         textFormat = RenderingFormat.PLAIN
         renderUnabbreviatedType = false
+        renderCompanionObjectName = false
         classifierNamePolicy = ImportAwareClassifierNamePolicy(bindingContext, context)
     }
 
